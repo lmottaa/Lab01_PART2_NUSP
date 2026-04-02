@@ -15,7 +15,7 @@ services:
       - postgres_data:/var/lib/postgresql/data
 
   worker:
-    build: 
+    build:
       context: .
       dockerfile: worker/Dockerfile
     container_name: worker
@@ -33,5 +33,19 @@ services:
       LOG_LEVEL: INFO
       PYTHONUNBUFFERED: 1
 
+  grafana:
+    image: grafana/grafana:latest
+    container_name: worker_grafana
+    depends_on:
+      - db
+    ports:
+      - "3001:3000"
+    environment:
+      GRAFANA_USER: admin
+      GRAFANA_PASSWORD: admin
+    volumes:
+      - grafana_data:/var/lib/grafana
+      
 volumes:
   postgres_data:
+  grafana_data:
